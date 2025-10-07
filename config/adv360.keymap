@@ -8,6 +8,9 @@
 
 / {
     behaviors {
+        #include "macros.dtsi"
+        #include "version.dtsi"
+
         hrm: homewrow_mods {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS";
