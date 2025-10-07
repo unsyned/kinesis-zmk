@@ -15,7 +15,7 @@
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            require-prior-idle-ms = <125>;
+            // require-prior-idle-ms = <125>;
             flavor = "tap-preferred";
         };
 
@@ -152,7 +152,7 @@
         //     key-positions = <26 28>;
         //     layers = <1>;
         // };
-    };
+    // };
 
   keymap {
     compatible = "zmk,keymap";
