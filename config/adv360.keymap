@@ -8,18 +8,150 @@
 
 / {
     behaviors {
-      #include "macros.dtsi"
-      #include "version.dtsi"
+        hrm: homewrow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS";
+            bindings = <&kp>, <&kp>;
 
-      hm: homerow_mods {
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            require-prior-idle-ms = <125>;
+            flavor = "tap-preferred";
+        };
+
+        hrs: homewrow_shift {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_SHIFT";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <150>;
+            flavor = "balanced";
+        };
+
+        lh: layer_hold {
           compatible = "zmk,behavior-hold-tap";
-          label = "HOMEROW_MODS";
+          label = "LAYER_HOLD";
+          bindings = <&mo>, <&kp>;
+
           #binding-cells = <2>;
           tapping-term-ms = <200>;
-          quick_tap_ms = <175>;
-          flavor = "tap-preferred";
-          bindings = <&kp>, <&kp>;
-      };
+          flavor = "hold-preferred";
+        };
+
+        bspc: bspc_del_on_shift {
+            compatible = "zmk,behavior-mod-morph";
+            label = "BSPC_DEL_ON_SHIFT";
+            bindings = <&kp BSPC>, <&kp DEL>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        // the following only USES one argument but requires 2, so pass in the layer as the
+        // first param and a dummy value like 0 as second
+        lhbs: layer_hold_bspc_override {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LAYER_HOLD_BSPC_OVERRIDE";
+            bindings = <&mo>, <&bspc>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+        };
+
+        space: space_tab_on_shift {
+            compatible = "zmk,behavior-mod-morph";
+            label = "SPACE_TAB_ON_SHIFT";
+            bindings = <&kp SPACE>, <&kp TAB>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT)>;
+        };
+
+        ltsp: layer_tap_space_override {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LAYER_TAP_SPACE_OVERRIDE";
+            bindings = <&mo>, <&space>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "tap-preferred";
+        };
+
+        comma: comma_semicolon_on_shift {
+            compatible = "zmk,behavior-mod-morph";
+            label = "COMMA_SEMICOLON_ON_SHIFT";
+            bindings = <&kp COMMA>, <&kp SEMI>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT)>;
+        };
+
+        dot: dot_colon_on_shift {
+            compatible = "zmk,behavior-mod-morph";
+            label = "DOT_COLON_ON_SHIFT";
+            bindings = <&kp DOT>, <&kp COLON>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT)>;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+
+        escape {
+            bindings = <&kp ESC>;
+            key-positions = <2 3>;
+            timeout-ms = <30>;
+            layers = <0 1>;
+        };
+
+        enter {
+            bindings = <&kp ENTER>;
+            key-positions = <32 33>;
+            timeout-ms = <30>;
+            layers = <0 1>;
+        };
+
+        // one handed copy/paste on mac
+        copy {
+            bindings = <&kp LG(C)>;
+            key-positions = <26 27>;
+            layers = <0>;
+        };
+
+        paste {
+            bindings = <&kp LG(V)>;
+            key-positions = <27 28>;
+            layers = <0>;
+        };
+
+        cut {
+            bindings = <&kp LG(X)>;
+            key-positions = <26 28>;
+            layers = <0>;
+        };
+
+        // TODO: if the power cycle toggle layer issue has a work around, implement the following combos on that layer
+        // one handed cut copy paste for linux and windows
+        // copy_lw {
+        //     bindings = <&kp LC(C)>;
+        //     key-positions = <26 27>;
+        //     layers = <1>;
+        // };
+        //
+        // paste_lw {
+        //     bindings = <&kp LC(V)>;
+        //     key-positions = <27 28>;
+        //     layers = <1>;
+        // };
+        //
+        // cut_lw {
+        //     bindings = <&kp LC(X)>;
+        //     key-positions = <26 28>;
+        //     layers = <1>;
+        // };
     };
 
   keymap {
