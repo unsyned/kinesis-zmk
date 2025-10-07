@@ -170,8 +170,8 @@
         &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &lhbs 2 0 &kp ESC   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
       >;
     };
-    
-    default_layer {
+
+    qwerty {
       display-name = "qwr";
       bindings = <
         &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &tog 2                                                           &mo 4 &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
