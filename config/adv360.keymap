@@ -18,19 +18,19 @@
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            // require-prior-idle-ms = <125>;
+            require-prior-idle-ms = <125>;
             flavor = "tap-preferred";
         };
 
-        // hrs: homewrow_shift {
-        //     compatible = "zmk,behavior-hold-tap";
-        //     label = "HOMEROW_SHIFT";
-        //     bindings = <&kp>, <&kp>;
-        //
-        //     #binding-cells = <2>;
-        //     tapping-term-ms = <150>;
-        //     flavor = "balanced";
-        // };
+        hrs: homewrow_shift {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_SHIFT";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <150>;
+            flavor = "balanced";
+        };
         //
         // lh: layer_hold {
         //   compatible = "zmk,behavior-hold-tap";
