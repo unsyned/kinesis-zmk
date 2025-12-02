@@ -198,7 +198,7 @@
       bindings = <
         &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &tog 1                                           &mo 4 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12
         &trans &kp KP_MINUS      &kp N7  &kp N8  &kp N9  &kp COMMA  &none                              &none &kp PG_UP  &kp HOME    &kp UP    &kp END    &kp INS  &trans
-        &trans &hrm LCTRL N0  &hrm LALT N1  &hrm LGUI N2  &hrs LSHFT N3  &kp SEMI    &none        &trans &trans &trans &trans        &none &kp PG_DN  &kp LEFT    &kp DOWN  &kp RIGHT  &kp DEL  &trans
+        &trans &hrm LCTRL N0  &hrm LALT N1  &hrm LGUI N2  &hrs LSHFT N3  &kp COLON    &none        &trans &trans &trans &trans        &none &kp PG_DN  &kp LEFT    &kp DOWN  &kp RIGHT  &kp DEL  &trans
         &trans &kp KP_PLUS   &kp N4  &kp N5  &kp N6  &kp DOT                      &trans &trans                 &kp PSCRN  &caps_word  &kp CAPS  &kp RSHFT  &sl 4  &trans
         &trans &trans &trans &trans &trans               &kp TAB &kp ENTER &trans &trans &trans &trans              &trans &trans &trans  &trans  &trans
       >;
