@@ -200,7 +200,7 @@
         &trans &kp KP_MINUS      &kp N7  &kp N8  &kp N9  &kp COMMA  &none                              &none &kp PG_UP  &kp HOME    &kp UP    &kp END    &kp INS  &trans
         &trans &hrm LCTRL N0  &hrm LALT N1  &hrm LGUI N2  &hrs LSHFT N3  &kp COLON    &none        &trans &trans &trans &trans        &none &kp PG_DN  &kp LEFT    &kp DOWN  &kp RIGHT  &kp DEL  &trans
         &trans &kp KP_PLUS   &kp N4  &kp N5  &kp N6  &kp DOT                      &trans &trans                 &kp PSCRN  &caps_word  &kp CAPS  &kp RSHFT  &sl 4  &trans
-        &trans &trans &trans &trans &trans               &kp TAB &kp ENTER &trans &trans &trans &trans              &trans &trans &trans  &trans  &trans
+        &trans &trans &trans &trans &trans               &kp ENTER &kp TAB &trans &trans &trans &trans              &trans &trans &trans  &trans  &trans
       >;
     };
 
