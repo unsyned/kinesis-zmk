@@ -11,6 +11,15 @@
         #include "macros.dtsi"
         #include "version.dtsi"
 
+        td_scw: tap_dance_shift_caps_word {
+          compatible = "zmk,behavior-tap-dance";
+          label = "TAP_DANCE_SHIFT_CW";
+          bindings = <&sk LSHFT>, <&caps_word>;
+
+          #binding-cells = <0>;
+          tapping-term-ms = <175>;
+        };
+
         hrm: homewrow_mods {
             compatible = "zmk,behavior-hold-tap";
             label = "HOMEROW_MODS";
@@ -167,7 +176,7 @@
         &kp TAB   &kp J           &kp L         &kp Y         &kp P           &kp K  &none                                       &none &kp Z      &kp F           &kp O        &kp U          &kp SQT    &kp BSPC
         &mt LCTRL ESCAPE  &hrm LCTRL C    &hrm LALT R   &hrm LGUI S   &hrs LSHIFT T   &kp G  &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none &kp M      &hrs RSHIFT N   &hrm RGUI E  &hrm RALT I    &hrm RCTRL A   &kp ENTER
         &kp LSHFT         &kp W           &kp Q         &kp V         &kp D           &kp B                            &kp HOME &kp PG_UP                           &kp X      &kp H           &kp FSLH     &comma         &dot           &kp RSHIFT
-        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &lhbs 2 0 &kp ESC   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
+        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &lhbs 2 0 &td_scw   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
       >;
     };
 
@@ -188,7 +197,7 @@
         &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &trans                                                           &trans &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
         &kp TAB   &kp EXCLAMATION  &kp AT     &kp HASH   &kp DOLLAR  &kp PERCENT      &none                                      &none  &kp CARET      &kp AMPS   &kp STAR  &kp TILDE  &kp GRAVE    &kp BSLH
         &kp ESC   &hrm LCTRL LESS_THAN    &hrm LALT LBKT   &hrm LGUI LBRC   &hrs LSHFT LPAR    &kp BSLH         &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none  &kp PIPE       &hrs RSHFT RPAR   &hrm RGUI RBRC  &hrm RALT RBKT   &hrm RCTRL GREATER_THAN     &kp SQT
-        &kp LSHFT &kp BSLH         &kp TILDE  &kp GRAVE  &kp COLON   &kp SEMI                                   &kp HOME &kp PG_UP                            &kp UNDER      &kp MINUS  &kp PLUS  &kp EQUAL  &kp QMARK    &kp RSHFT
+        &kp LSHFT &kp BSLH    &kp COLON   &kp SEMI     &kp TILDE  &kp GRAVE                                     &kp HOME &kp PG_UP                            &kp UNDER      &kp MINUS  &kp PLUS  &kp EQUAL  &kp QMARK    &kp RSHFT
         &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &kp BSPC &kp DEL   &kp END  &kp PG_DN &kp TAB &kp ESC               &kp UP     &kp DOWN     &kp KP_DOT    &kp RBKT        &mo 3
       >;
     };
