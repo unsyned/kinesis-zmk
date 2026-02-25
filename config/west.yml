@@ -4,10 +4,16 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: refil
       url-base: https://github.com/refil
+    - name: elpekenin
+      url-base: https://github.com/elpekenin
+
   projects:
     - name: zmk
       remote: refil
       revision: adv360-z3.5-2
       import: app/west.yml
+    - name: zmk-userspace # for persistent default layer
+      remote: elpekenin
+      revision: main
   self:
     path: config
