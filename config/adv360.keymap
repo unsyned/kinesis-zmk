@@ -58,7 +58,8 @@
             bindings = <&kp BSPC>, <&kp DEL>;
 
             #binding-cells = <0>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+            // mods = <(MOD_LSFT|MOD_RSFT)>;
+            mods = <(MOD_RSFT)>;
         };
 
         // the following only USES one argument but requires 2, so pass in the layer as the
