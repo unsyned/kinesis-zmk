@@ -380,7 +380,7 @@
         &kp TAB   &kp W           &kp L         &kp Y         &kp P           &kp B  &none                                       &none &kp Z      &kp F           &kp O        &kp U          &kp SQT    &kp BSPC
         &mt LCTRL ESCAPE  &hrm LCTRL C    &hrm LALT R   &hrm LGUI S   &hrs LSHIFT T   &kp G  &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none &kp M      &hrs RSHIFT N   &hrm RGUI E  &hrm RALT I    &hrm RCTRL A   &kp ENTER
         &kp LSHFT         &kp Q           &lp LG(X) J  &lp LG(C) V  &lp LG(V) D           &kp K                            &kp HOME &kp PG_UP                           &kp X      &kp H           &kp FSLH     &comma         &dot           &kp RSHIFT
-        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &lhbs 2 0 &td_scw   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
+        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &kp ENTER   &ltsp SYM SPACE   &kp END  &kp PG_DN &lhbs NAV BSPC   &td_shift              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
       >;
     };
 
