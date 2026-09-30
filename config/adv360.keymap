@@ -75,6 +75,9 @@
 
 / {
     behaviors {
+        #include "macros.dtsi"
+        #include "version.dtsi"
+
         // sticky that applies just before the next keystroke
         skq: sticky_key_quick_release {
           compatible = "zmk,behavior-sticky-key";
