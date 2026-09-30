@@ -6,34 +6,117 @@
 #include <dt-bindings/zmk/backlight.h>
 #include <dt-bindings/zmk/pointing.h>
 
+#include "elpekenin/behaviors.dtsi"
+
+#define MAC 0
+#define LIN 1
+#define SYM 2
+#define NAV 3 // numpad and navigation
+#define SYS 4 // fn, bluetooth, media controls
+// #define MSE 5
+
+#define KEYS_LEFT 0 1 2 3 4 5 6 \
+                  14 15 16 17 18 19 20 \
+                  28 29 30 31 32 33 34 \
+                  46 47 48 49 50 51 \
+                  60 61 62 63 64
+
+#define KEYS_RIGHT 7 8 9 10 11 12 13 \
+                   21 22 23 24 25 26 27 \
+                   39 40 41 42 43 44 45 \
+                   54 55 56 57 58 59 \
+                   71 72 73 74 75
+
+#define THUMBS_LEFT 35 36 52 65 66 67
+
+#define THUMBS_RIGHT 37 38 53 68 69 70
+
+#define THUMBS_LEFT 35 36 54 71 72 73
+
+#define THUMBS_RIGHT 37 38 57 74 75 76
+
+#define THUMBS THUMBS_LEFT THUMBS_RIGHT
+
+#define LT0  19  // left-top row
+#define LT1  18
+#define LT2  17
+#define LT3  16
+#define LT4  15
+#define LT5  14
+
+#define RT0 22  // right-top row
+#define RT1 23
+#define RT2 24
+#define RT3 25
+#define RT4 26
+#define RT5 27
+
+#define LM0 33  // left-middle row
+#define LM1 32
+#define LM2 31
+#define LM3 30
+#define LM4 29
+#define LM5 28
+
+#define RM0 40  // right-middle row
+#define RM1 41
+#define RM2 42
+#define RM3 43
+#define RM4 44
+#define RM5 45
+
+#define LB0 51  // left-bottom row
+#define LB1 50
+#define LB2 49
+#define LB3 48
+#define LB4 47
+#define LB5 46
+
+#define RB0 54  // right-bottom row
+#define RB1 55
+#define RB2 56
+#define RB3 57
+#define RB4 58
+#define RB5 59
+
+&key_repeat {
+    usage-pages = <HID_USAGE_KEY HID_USAGE_CONSUMER>;
+};
+
 / {
     behaviors {
-        #include "macros.dtsi"
-        #include "version.dtsi"
-
-        td_scw: tap_dance_shift_caps_word {
-          compatible = "zmk,behavior-tap-dance";
-          label = "TAP_DANCE_SHIFT_CW";
-          bindings = <&sk LSHFT>, <&caps_word>;
-
-          #binding-cells = <0>;
-          tapping-term-ms = <175>;
+        // sticky that applies just before the next keystroke
+        skq: sticky_key_quick_release {
+          compatible = "zmk,behavior-sticky-key";
+          #binding-cells = <1>;
+          bindings = <&kp>;
+          release-after-ms = <1000>;
+          quick-release;
+          /* ignore-modifiers; */
+          // this was wrapping my semi colon override in another shift, causing colon
         };
 
-        hrm: homewrow_mods {
+        td_shift: tap_dance_shift_caps_word {
+            compatible = "zmk,behavior-tap-dance";
+            bindings = <&skq LSHIFT>, <&caps_word>;
+
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+        };
+
+        hrm: homerow_mods {
             compatible = "zmk,behavior-hold-tap";
-            label = "HOMEROW_MODS";
             bindings = <&kp>, <&kp>;
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
             require-prior-idle-ms = <125>;
+            quick-tap-ms = <150>;
             flavor = "tap-preferred";
         };
 
-        hrs: homewrow_shift {
+        hrs: homerow_shift {
             compatible = "zmk,behavior-hold-tap";
-            label = "HOMEROW_SHIFT";
             bindings = <&kp>, <&kp>;
 
             #binding-cells = <2>;
@@ -43,7 +126,6 @@
 
         lh: layer_hold {
           compatible = "zmk,behavior-hold-tap";
-          label = "LAYER_HOLD";
           bindings = <&mo>, <&kp>;
 
           #binding-cells = <2>;
@@ -53,7 +135,6 @@
 
         bspc: bspc_del_on_shift {
             compatible = "zmk,behavior-mod-morph";
-            label = "BSPC_DEL_ON_SHIFT";
             bindings = <&kp BSPC>, <&kp DEL>;
 
             #binding-cells = <0>;
@@ -64,8 +145,8 @@
         // first param and a dummy value like 0 as second
         lhbs: layer_hold_bspc_override {
             compatible = "zmk,behavior-hold-tap";
-            label = "LAYER_HOLD_BSPC_OVERRIDE";
-            bindings = <&mo>, <&bspc>;
+            /* bindings = <&mo>, <&bspc>; */
+            bindings = <&mo>, <&kp>;
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
@@ -73,7 +154,6 @@
 
         space: space_tab_on_shift {
             compatible = "zmk,behavior-mod-morph";
-            label = "SPACE_TAB_ON_SHIFT";
             bindings = <&kp SPACE>, <&kp TAB>;
 
             #binding-cells = <0>;
@@ -82,147 +162,293 @@
 
         ltsp: layer_tap_space_override {
             compatible = "zmk,behavior-hold-tap";
-            label = "LAYER_TAP_SPACE_OVERRIDE";
-            bindings = <&mo>, <&space>;
+            bindings = <&mo>, <&kp>;
 
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
+            tapping-term-ms = <150>;
             flavor = "tap-preferred";
+        };
+
+        qmark: qmark_excl_on_shift {
+            compatible = "zmk,behavior-mod-morph";
+            bindings = <&kp QMARK>, <&kp EXCL>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
         comma: comma_semicolon_on_shift {
             compatible = "zmk,behavior-mod-morph";
-            label = "COMMA_SEMICOLON_ON_SHIFT";
             bindings = <&kp COMMA>, <&kp SEMI>;
 
             #binding-cells = <0>;
-            mods = <(MOD_LSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
         dot: dot_colon_on_shift {
             compatible = "zmk,behavior-mod-morph";
-            label = "DOT_COLON_ON_SHIFT";
             bindings = <&kp DOT>, <&kp COLON>;
 
             #binding-cells = <0>;
-            mods = <(MOD_LSFT)>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        lp: long_press {
+            compatible = "zmk,behavior-hold-tap";
+            bindings = <&kp>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <155>;
+            flavor = "balanced";
+        };
+
+        // these will only work as volume until this is resolved: https://github.com/zmkfirmware/zmk/issues/2329#issuecomment-2161285644
+        bri_vol_dn: bri_or_vol_dn {
+            compatible = "zmk,behavior-mod-morph";
+            bindings = <&kp C_VOL_DN>, <&kp C_BRI_DN>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LGUI|MOD_RGUI)>;
+            keep-mods = <0>;
+        };
+
+        bri_vol_up: bri_or_vol_up {
+          compatible = "zmk,behavior-mod-morph";
+          bindings = <&kp C_VOL_UP>, <&kp C_BRI_UP>;
+
+          #binding-cells = <0>;
+          mods = <(MOD_LGUI|MOD_RGUI)>;
+          keep-mods = <0>;
         };
     };
 
-    // combos {
-    //     compatible = "zmk,combos";
-    //
-    //     escape {
-    //         bindings = <&kp ESC>;
-    //         key-positions = <2 3>;
-    //         timeout-ms = <30>;
-    //         layers = <0 1>;
-    //     };
-    //
-    //     enter {
-    //         bindings = <&kp ENTER>;
-    //         key-positions = <32 33>;
-    //         timeout-ms = <30>;
-    //         layers = <0 1>;
-    //     };
-    //
-    //     // one handed copy/paste on mac
-    //     copy {
-    //         bindings = <&kp LG(C)>;
-    //         key-positions = <26 27>;
-    //         layers = <0>;
-    //     };
-    //
-    //     paste {
-    //         bindings = <&kp LG(V)>;
-    //         key-positions = <27 28>;
-    //         layers = <0>;
-    //     };
-    //
-    //     cut {
-    //         bindings = <&kp LG(X)>;
-    //         key-positions = <26 28>;
-    //         layers = <0>;
-    //     };
+    combos {
+        compatible = "zmk,combos";
 
-        // TODO: if the power cycle toggle layer issue has a work around, implement the following combos on that layer
-        // one handed cut copy paste for linux and windows
-        // copy_lw {
-        //     bindings = <&kp LC(C)>;
-        //     key-positions = <26 27>;
-        //     layers = <1>;
-        // };
-        //
-        // paste_lw {
-        //     bindings = <&kp LC(V)>;
-        //     key-positions = <27 28>;
-        //     layers = <1>;
-        // };
-        //
-        // cut_lw {
-        //     bindings = <&kp LC(X)>;
-        //     key-positions = <26 28>;
-        //     layers = <1>;
-        // };
-    // };
+        escape {
+            bindings = <&kp ESC>;
+            key-positions = <LM3 LM2>;
+            require-prior-idle-ms = <40>;
+            timeout-ms = <25>;
+        };
+
+        enter {
+            bindings = <&kp ENTER>;
+            key-positions = <RM2 RM3>;
+            require-prior-idle-ms = <40>;
+            timeout-ms = <20>;
+        };
+
+        tab {
+            bindings = <&kp TAB>;
+            key-positions = <LM2 LM1>;
+            require-prior-idle-ms = <40>;
+            timeout-ms = <20>;
+        };
+
+        caps {
+            bindings = <&kp CAPS>;
+            key-positions = <RT1 RT2 RT3>;
+            require-prior-idle-ms = <40>;
+            timeout-ms = <20>;
+        };
+
+        sl_sys {
+            bindings = <&sl SYS>;
+            key-positions = <LT1 LT2 LT3>;
+            require-prior-idle-ms = <40>;
+            timeout-ms = <20>;
+        };
+
+        /* bri_dn { */
+        /*     bindings = <&kp C_BRI_DN>; */
+        /*     key-positions = <RB1 RB2>; */
+        /*     require-prior-idle-ms = <40>; */
+        /*     timeout-ms = <30>; */
+        /* }; */
+        /**/
+        /* bri_up { */
+        /*     bindings = <&kp C_BRI_UP>; */
+        /*     key-positions = <RB2 RB3>; */
+        /*     require-prior-idle-ms = <40>; */
+        /*     timeout-ms = <30>; */
+        /* }; */
+
+        //*** OS specific combos ***//
+        // mac combos
+        /* copy { */
+        /*     bindings = <&kp LG(C)>; */
+        /*     key-positions = <LB3 LB2>; */
+        /*     layers = <0>; */
+        /* }; */
+        /**/
+        /* paste { */
+        /*     bindings = <&kp LG(V)>; */
+        /*     key-positions = <LB2 LB1>; */
+        /*     layers = <0>; */
+        /* }; */
+        /**/
+        /* cut { */
+        /*     bindings = <&kp LG(X)>; */
+        /*     key-positions = <LB3 LB1>; */
+        /*     layers = <0>; */
+        /* }; */
+
+        /* back_word { */
+        /*     bindings = <&kp LA(BSPC)>; */
+        /*     key-positions = <LM3 LM1>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <0>; */
+        /* }; */
+        /**/
+        /* del_word { */
+        /*     bindings = <&kp LA(DEL)>; */
+        /*     key-positions = <RM1 RM3>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <0>; */
+        /* }; */
+        /**/
+        /* undo { */
+        /*     bindings = <&kp LG(Z)>; */
+        /*     key-positions = <RT1 RT2>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <0>; */
+        /* }; */
+        /**/
+        /* redo { */
+        /*     bindings = <&kp LG(LS(Z))>; */
+        /*     key-positions = <RT2 RT3>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <0>; */
+        /* }; */
+
+        // linux combos
+        /* copy_lin { */
+        /*     bindings = <&kp LC(C)>; */
+        /*     key-positions = <LB3 LB2>; */
+        /*     layers = <1>; */
+        /* }; */
+        /**/
+        /* paste_lin { */
+        /*     bindings = <&kp LC(V)>; */
+        /*     key-positions = <LB2 LB1>; */
+        /*     layers = <1>; */
+        /* }; */
+        /**/
+        /* cut_lin { */
+        /*     bindings = <&kp LC(X)>; */
+        /*     key-positions = <LB3 LB1>; */
+        /*     layers = <1>; */
+        /* }; */
+
+        /* back_word_lin { */
+        /*     bindings = <&kp LC(BSPC)>; */
+        /*     key-positions = <LM3 LM1>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <1>; */
+        /* }; */
+        /**/
+        /* del_word_lin { */
+        /*     bindings = <&kp LC(DEL)>; */
+        /*     key-positions = <RM1 RM3>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <1>; */
+        /* }; */
+        /**/
+        /* undo_lin { */
+        /*     bindings = <&kp LC(Z)>; */
+        /*     key-positions = <RT1 RT2>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <1>; */
+        /* }; */
+        /**/
+        /* redo_lin { */
+        /*     bindings = <&kp LC(Y)>; */
+        /*     key-positions = <RT2 RT3>; */
+        /*     require-prior-idle-ms = <50>; */
+        /*     timeout-ms = <20>; */
+        /*     layers = <1>; */
+        /* }; */
+
+    };
+
 
   keymap {
     compatible = "zmk,keymap";
-
-    default_layer {
-      display-name = "cnr";
+    
+    mac {
+      display-name = "mac";
       bindings = <
         &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &tog 1                                                           &mo 4 &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
-        &kp TAB   &kp J           &kp L         &kp Y         &kp P           &kp K  &none                                       &none &kp Z      &kp F           &kp O        &kp U          &kp SQT    &kp BSPC
+        &kp TAB   &kp W           &kp L         &kp Y         &kp P           &kp B  &none                                       &none &kp Z      &kp F           &kp O        &kp U          &kp SQT    &kp BSPC
         &mt LCTRL ESCAPE  &hrm LCTRL C    &hrm LALT R   &hrm LGUI S   &hrs LSHIFT T   &kp G  &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none &kp M      &hrs RSHIFT N   &hrm RGUI E  &hrm RALT I    &hrm RCTRL A   &kp ENTER
-        &kp LSHFT         &kp W           &kp Q         &kp V         &kp D           &kp B                            &kp HOME &kp PG_UP                           &kp X      &kp H           &kp FSLH     &comma         &dot           &kp RSHIFT
+        &kp LSHFT         &kp Q           &lp LG(X) J  &lp LG(C) V  &lp LG(V) D           &kp K                            &kp HOME &kp PG_UP                           &kp X      &kp H           &kp FSLH     &comma         &dot           &kp RSHIFT
         &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &lhbs 2 0 &td_scw   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
       >;
     };
 
-    qwerty {
-      display-name = "qwr";
+    lin {
+      display-name = "lin";
       bindings = <
         &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &tog 1                                                           &mo 4 &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
-        &kp TAB   &kp Q     &kp W    &kp E    &kp R      &kp T  &none                                                            &none &kp Y  &kp U  &kp I     &kp O    &kp P    &kp BSLH
-        &kp ESC   &kp A     &kp S    &kp D    &kp F      &kp G  &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none &kp H  &kp J  &kp K     &kp L    &kp SEMI &kp SQT
-        &kp LSHFT &kp Z     &kp X    &kp C    &kp V      &kp B                            &kp HOME &kp PG_UP                           &kp N  &kp M  &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
-        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT               &kp SPACE &kp ESC   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0               &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
-      >;
+        &kp TAB   &kp W           &kp L         &kp Y         &kp P           &kp B  &none                                       &none &kp Z      &kp F           &kp O        &kp U          &kp SQT    &kp BSPC
+        &mt LCTRL ESCAPE  &hrm LCTRL C    &hrm LALT R   &hrm LGUI S   &hrs LSHIFT T   &kp G  &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none &kp M      &hrs RSHIFT N   &hrm RGUI E  &hrm RALT I    &hrm RCTRL A   &kp ENTER
+        &kp LSHFT         &kp Q &lp LC(X) J &lp LC(C) V &lp LC(V) D           &kp K                            &kp HOME &kp PG_UP                           &kp X      &kp H           &qmark   &comma  &dot           &kp RSHIFT
+        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT             &kp ENTER   &ltsp SYM SPACE   &kp END  &kp PG_DN &lhbs NAV BSPC   &td_shift              &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
+      >;&kp ENTER,       &ltsp SYM SPACE,               &lhbs NAV BSPC,     &td_shift,
     };
 
-    keypad {
+//    qwerty {
+//      display-name = "qwr";
+//      bindings = <
+//        &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &tog 1                                                           &mo 4 &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
+//        &kp TAB   &kp Q     &kp W    &kp E    &kp R      &kp T  &none                                                            &none &kp Y  &kp U  &kp I     &kp O    &kp P    &kp BSLH
+//        &kp ESC   &kp A     &kp S    &kp D    &kp F      &kp G  &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none &kp H  &kp J  &kp K     &kp L    &kp SEMI &kp SQT
+//        &kp LSHFT &kp Z     &kp X    &kp C    &kp V      &kp B                            &kp HOME &kp PG_UP                           &kp N  &kp M  &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
+//        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT               &kp SPACE &kp ESC   &kp END  &kp PG_DN &kp ENTER &ltsp 3 0               &kp UP &kp DOWN  &kp LBKT &kp RBKT &mo 3
+//      >;
+//    };
+
+    symbol {
       display-name = "sym";
       bindings = <
         &kp EQUAL &kp N1    &kp N2   &kp N3   &kp N4     &kp N5 &trans                                                           &trans &kp N6 &kp N7 &kp N8    &kp N9   &kp N0   &kp MINUS
         &kp TAB   &kp EXCLAMATION  &kp AT     &kp HASH   &kp DOLLAR  &kp PERCENT      &none                                      &none  &kp CARET      &kp AMPS   &kp STAR  &kp TILDE  &kp GRAVE    &kp BSLH
-        &kp ESC   &hrm LCTRL LESS_THAN    &hrm LALT LBKT   &hrm LGUI LBRC   &hrs LSHFT LPAR    &kp BSLH         &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none  &kp PIPE       &hrs RSHFT RPAR   &hrm RGUI RBRC  &hrm RALT RBKT   &hrm RCTRL GREATER_THAN     &kp SQT
-        &kp LSHFT &kp BSLH    &kp COLON   &kp SEMI     &kp TILDE  &kp GRAVE                                     &kp HOME &kp PG_UP                            &kp UNDER      &kp MINUS  &kp PLUS  &kp EQUAL  &kp QMARK    &kp RSHFT
-        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &kp BSPC &kp DEL   &kp END  &kp PG_DN &kp TAB &kp ESC               &kp UP     &kp DOWN     &kp KP_DOT    &kp RBKT        &mo 3
+        &kp ESC   &hrm LCTRL LESS_THAN  &hrm LALT LBKT  &hrm LGUI LBRC  &hrs LSHFT LPAR   &kp PIPE         &none           &kp LCTRL &kp LALT &kp LGUI  &kp RCTRL           &none  &kp FSLH  &hrs RSHFT RPAR  &hrm RGUI RBRC  &hrm RALT RBKT  &hrm RCTRL GREATER_THAN     &kp SQT
+        &kp LSHFT &kp BSLH      &kp COLON   &kp SEMI &kp COMMA  &kp DOT                                     &kp HOME &kp PG_UP                            &kp UNDER      &kp MINUS    &kp PLUS    &kp EQUAL  &kp DOT    &kp RSHFT
+        &mo 2     &kp GRAVE &kp CAPS &kp LEFT &kp RIGHT                &trans &trans   &kp END  &kp PG_DN &kp ESC &kp DEL               &kp UP     &kp DOWN     &kp KP_DOT    &kp RBKT        &mo 3
       >;
     };
 
-    fn {
+    nav {
       display-name = "nav";
       bindings = <
         &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &tog 1                                           &mo 4 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12
-        &trans &kp KP_MINUS      &kp N7  &kp N8  &kp N9  &kp COMMA  &none                              &none &kp PG_UP  &kp HOME    &kp UP    &kp END    &kp INS  &trans
-        &trans &hrm LCTRL N0  &hrm LALT N1  &hrm LGUI N2  &hrs LSHFT N3  &kp COLON    &none        &trans &trans &trans &trans        &none &kp PG_DN  &kp LEFT    &kp DOWN  &kp RIGHT  &kp DEL  &trans
-        &trans &kp KP_PLUS   &kp N4  &kp N5  &kp N6  &kp DOT                      &trans &trans                 &kp PSCRN  &caps_word  &kp CAPS  &kp RSHFT  &sl 4  &trans
-        &trans &trans &trans &trans &trans               &kp ENTER &kp TAB &trans &trans &trans &trans              &trans &trans &trans  &trans  &trans
+        &trans &kp KP_MINUS      &kp N7  &kp N8  &kp N9  &kp COMMA  &none                              &none &kp PSCRN  &kp HOME    &kp UP     &kp END   &kp PG_UP  &trans
+        &trans &hrm LCTRL N0  &hrm LALT N1  &hrm LGUI N2  &hrs LSHFT N3  &kp COLON    &none        &trans &trans &trans &trans        &none &bri_vol_up  &hrm RSHFT LEFT  &hrm RGUI DOWN    &hrm RALT RIGHT   &hrm RCTRL PG_DN  &trans
+        &trans &kp KP_PLUS   &kp N4  &kp N5  &kp N6  &kp DOT                      &trans &trans                 &bri_vol_dn &kp C_PREV   &lp C_MUTE C_PLAY_PAUSE &kp C_NEXT &kp INS  &trans
+        &trans &trans &trans &trans &trans               &kp TAB &kp ENTER &trans &trans &trans &trans              &trans &trans &trans  &trans  &trans
       >;
     };
 
-    mod {
-      display-name = "bt";
+    system {
+      display-name = "sys";
       bindings = <
         &macro_ver &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &none                                                                     &trans                 &none        &none        &none        &none &none &none
-        &bl BL_TOG &kp F12        &kp F7         &kp F8        &kp F9        &none        &bootloader                                                               &bootloader            &rgb_ug RGB_TOG        &bl BL_TOG        &none        &none &none &none
+        &bl BL_TOG &kp F12        &kp F7         &kp F8        &kp F9        &bootloader        &bootloader                                                               &bootloader         &bootloader   &pdf MAC        &pdf LIN        &rgb_ug RGB_TOG        &bl BL_TOG  &none
         &studio_unlock &kp F11        &kp F4        &kp F5        &kp F6        &none        &none                   &none &none &bt BT_CLR &none                      &stp STP_BAT &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &none
-        &none          &kp F10        &kp F1        &kp F2        &kp F3   &none                                      &none &none                                                        &none        &none        &none        &none &none &none
+        &none          &kp F10        &kp F1        &kp F2        &kp F3   &sys_reset                                      &none &none                                                        &sys_reset        &none        &none        &none &none &none
         &none &none        &none        &none        &none                                       &none &none &none &none      &bl BL_TOG &rgb_ug RGB_TOG                                     &bl BL_INC   &bl BL_DEC   &none &none &none
       >;
     };
+
     // keypad {
     //   display-name = "Kp";
     //   bindings = <
@@ -253,6 +479,7 @@
     //     &none &none        &none        &none        &none                                       &none &none &none &none      &bl BL_TOG &rgb_ug RGB_TOG                                     &bl BL_INC   &bl BL_DEC   &none &none &none
     //   >;
     // };
+
     extra1 { 
       display-name = "Red";    
       status = "reserved";
